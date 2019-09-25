@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!--
+    Ignite configuration with all defaults and enabled p2p deployment and enabled events.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+    <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+        <!-- Set to true to enable distributed class loading for examples, default is false. -->
+
+        <!-- Enable task execution events for examples. -->
+        <property name="includeEventTypes">
+            <list>
+                <!--Task execution events-->
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_STARTED"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FINISHED"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FAILED"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_TIMEDOUT"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_SESSION_ATTR_SET"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_REDUCED"/>
+
+                <!--Cache events-->
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_READ"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED"/>
+            </list>
+        </property>
+
+        <!-- Explicitly configure TCP discovery SPI to provide list of initial nodes. -->
+	<property name="discoverySpi">
+		<bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+		<property name="ipFinder">
+		<!--
+			Enables Kubernetes IP finder and setting custom namespace name.
+		-->
+		<bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
+   			<property name="namespace" value="ignite"/>
+   			
+		        <property name="masterUrl" value="https://api-mes-k8s-local-3akmf5-47551496.us-east-2.elb.amazonaws.com"/>
+			
+			
+		</bean>
+		</property>
+		</bean>
+	</property>
+	<property name="cacheConfiguration">
+        <list>
+            <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                <property name="name" value="mbsPricing"></property>
+                <!-- Enable readThrough-->
+                <property name="readThrough" value="true"></property>
+                <property name="writeThrough" value="true"></property>
+                <!-- Set cacheStoreFactory-->
+                <property name="cacheStoreFactory">
+                    <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+                        <constructor-arg value="com.mes.poc.tem.mc.cachestore.MbsPricingStore"></constructor-arg>
+                    </bean>
+                </property>
+                <property name="queryEntities">
+                    <list>
+                        <bean class="org.apache.ignite.cache.QueryEntity">
+                            <property name="keyType" value="java.lang.Long"></property>
+                            <property name="valueType" value="com.mes.poc.tem.mc.vo.MbsPricing"></property>
+                            <property name="fields">
+                                <map>
+                                    <entry key="rec_id" value="java.lang.Long"></entry>
+									<entry key="merchant_number" value="java.lang.Long"></entry>
+                                    <entry key="item_type" value="java.lang.Long"></entry>
+                                    <entry key="item_subclass" value="java.lang.String"></entry>
+                                    <entry key="rate" value="java.lang.Long"></entry>
+									<entry key="per_item" value="java.lang.Long"></entry>
+									<entry key="volume_type" value="java.lang.Long"></entry>
+									<entry key="billing_months" value="java.lang.String"></entry>
+									<entry key="valid_date_begin" value="java.sql.Date"></entry>
+									<entry key="valid_date_end" value="java.sql.Date"></entry>
+									<entry key="date_created" value="java.sql.Date"></entry>
+									<entry key="created_by" value="java.lang.Long"></entry>
+									<entry key="last_modified" value="java.sql.Date"></entry>
+									<entry key="modified_by" value="java.lang.Long"></entry>
+                                </map>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+			 <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                <property name="name" value="visaSettlement"></property>
+                <!-- Enable readThrough-->
+                <property name="readThrough" value="true"></property>
+                <property name="writeThrough" value="true"></property>
+                <!-- Set cacheStoreFactory-->
+                <property name="cacheStoreFactory">
+                    <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+                        <constructor-arg value="com.mes.poc.tem.mc.cachestore.VisaSettlementStore"></constructor-arg>
+                    </bean>
+                </property>
+                <property name="queryEntities">
+                    <list>
+                        <bean class="org.apache.ignite.cache.QueryEntity">
+                            <property name="keyType" value="java.lang.Long"></property>
+                            <property name="valueType" value="com.mes.poc.tem.mc.vo.VisaSettlement"></property>
+                            <property name="fields">
+                                <map>
+									<entry key="recId" value="java.lang.Long"></entry>
+									<entry key="binNumber" value="java.lang.Long"></entry>
+									<entry key="acquirerBusinessId" value="java.lang.Long"></entry>
+									<entry key="bankNumber" value="java.lang.Long"></entry>
+									<entry key="merchantNumber" value="java.lang.Long"></entry>
+									<entry key="dbaName" value="java.lang.String"></entry>
+									<entry key="dbaCity" value="java.lang.String"></entry>
+									<entry key="dbaState" value="java.lang.String"></entry>
+									<entry key="dbaZip" value="java.lang.String"></entry>
+									<entry key="sicCode" value="java.lang.String"></entry>
+									<entry key="motoEcommerceMerchant" value="java.lang.String"></entry>
+									<entry key="mvv" value="java.lang.String"></entry>
+									<entry key="countryCode" value="java.lang.String"></entry>
+									<entry key="phoneNumber" value="java.lang.String"></entry>
+									<entry key="cardNumber" value="java.lang.String"></entry>
+									<entry key="cardType" value="java.lang.String"></entry>
+									<entry key="cardTypeEnhanced" value="java.lang.String"></entry>
+									<entry key="usIssuer" value="java.lang.String"></entry>
+									<entry key="regionIssuer" value="java.lang.String"></entry>
+									<entry key="regionMerchant" value="java.lang.String"></entry>
+									<entry key="cashDisbursment" value="java.lang.String"></entry>
+									<entry key="BatchDate" value="java.sql.Date"></entry>
+									<entry key="batchNumber" value="java.lang.Long"></entry>
+									<entry key="batchId" value="java.lang.Long"></entry>
+									<entry key="batchRecordId" value="java.lang.Long"></entry>
+									<entry key="transactionDate" value="java.sql.Date"></entry>
+									<entry key="debitCreditIndicator" value="java.lang.String"></entry>
+									<entry key="transactionAmount" value="java.lang.Long"></entry>
+									<entry key="currencyCode" value="java.lang.String"></entry>
+									<entry key="icCat" value="java.lang.String"></entry>
+									<entry key="icCatBilling" value="java.lang.String"></entry>
+									<entry key="icCatDowngrade" value="java.lang.String"></entry>
+									<entry key="authAmount" value="java.lang.Long"></entry>
+									<entry key="authAmountTotal" value="java.lang.Long"></entry>
+									<entry key="authCurrencyCode" value="java.lang.String"></entry>
+									<entry key="authCode" value="java.lang.String"></entry>
+									<entry key="authSourceCode" value="java.lang.String"></entry>
+									<entry key="authResponseCode" value="java.lang.String"></entry>
+									<entry key="authDate" value="java.sql.Date"></entry>
+									<entry key="authReturnedAci" value="java.lang.String"></entry>
+									<entry key="authSettledAci" value="java.lang.String"></entry>
+									<entry key="authRetrievalRefNum" value="java.lang.String"></entry>
+									<entry key="authTranId" value="java.lang.String"></entry>
+									<entry key="authValCode" value="java.lang.String"></entry>
+									<entry key="authAvsResponse" value="java.lang.String"></entry>
+									<entry key="authCvv2Response" value="java.lang.String"></entry>
+									<entry key="authRecId" value="java.lang.Long"></entry>
+									<entry key="tridentTranId" value="java.lang.String"></entry>
+									<entry key="productId" value="java.lang.String"></entry>
+									<entry key="cardHolderIdMethod" value="java.lang.String"></entry>
+									<entry key="specialConditionsId" value="java.lang.String"></entry>
+									<entry key="feeProgramIndicator" value="java.lang.String"></entry>
+									<entry key="requestedPaymentService" value="java.lang.String"></entry>
+									<entry key="reImbursementAttribute" value="java.lang.String"></entry>
+									<entry key="referenceNumber" value="java.lang.Long"></entry>
+									<entry key="acqReferenceNumber" value="java.lang.Long"></entry>
+									<entry key="purchaseId" value="java.lang.String"></entry>
+									<entry key="purchaseIdFormat" value="java.lang.String"></entry>
+									<entry key="statementDateBegin" value="java.sql.Date"></entry>
+									<entry key="statementDateEnd" value="java.sql.Date"></entry>
+									<entry key="taxAmount" value="java.lang.Long"></entry>
+									<entry key="taxIndicator" value="java.lang.String"></entry>
+									<entry key="posEntryMode" value="java.lang.String"></entry>
+									<entry key="cardPresent" value="java.lang.String"></entry>
+									<entry key="motoEcommerceInd" value="java.lang.String"></entry>
+									<entry key="posTermCap" value="java.lang.String"></entry>
+									<entry key="recurringPaymentInd" value="java.lang.String"></entry>
+									<entry key="techInd" value="java.lang.String"></entry>
+									<entry key="multipleClearingSeqNum" value="java.lang.Long"></entry>
+									<entry key="multipleClearingSeqCount" value="java.lang.Long"></entry>
+									<entry key="shipToZip" value="java.lang.String"></entry>
+									<entry key="shippingAmount" value="java.lang.Long"></entry>
+									<entry key="cashbackAmount" value="java.lang.Long"></entry>
+									<entry key="tipAmount" value="java.lang.Long"></entry>
+									<entry key="marketSpecificDataInd" value="java.lang.String"></entry>
+									<entry key="informationIndicator" value="java.lang.String"></entry>
+									<entry key="merchantVolIndicator" value="java.lang.String"></entry>
+									<entry key="ecommerceGoodsIndicator" value="java.lang.String"></entry>
+									<entry key="enhancedData1" value="java.lang.String"></entry>
+									<entry key="enhancedData2" value="java.lang.String"></entry>
+									<entry key="enhancedData3" value="java.lang.String"></entry>
+									<entry key="levelIIIDataPresent" value="java.lang.String"></entry>
+									<entry key="eligibilityFlags" value="java.lang.String"></entry>
+									<entry key="noShowIndicator" value="java.lang.String"></entry>
+									<entry key="hotelRentalDays" value="java.lang.Long"></entry>
+									<entry key="extraCharges" value="java.lang.String"></entry>
+									<entry key="rateDaily" value="java.lang.Long"></entry>
+									<entry key="rateWeekly" value="java.lang.Long"></entry>
+									<entry key="oneWayDropOffCharges" value="java.lang.Long"></entry>
+									<entry key="insuranceCharges" value="java.lang.Long"></entry>
+									<entry key="fuelCharges" value="java.lang.Long"></entry>
+									<entry key="carClassCode" value="java.lang.String"></entry>
+									<entry key="renterName" value="java.lang.String"></entry>
+									<entry key="totalRoomTax" value="java.lang.Long"></entry>
+									<entry key="folioCashAdvances" value="java.lang.Long"></entry>
+									<entry key="foodBeverageCharges" value="java.lang.Long"></entry>
+									<entry key="prepaidExpenses" value="java.lang.Long"></entry>
+									<entry key="cardNumberEnc" value="java.lang.String"></entry>
+									<entry key="TestFlag" value="java.lang.String"></entry>
+									<entry key="lastModifiedDate" value="java.sql.Date"></entry>
+									<entry key="lastModifiedUser" value="java.lang.String"></entry>
+									<entry key="loadFileId" value="java.lang.Long"></entry>
+									<entry key="loadFileName" value="java.lang.String"></entry>
+									<entry key="outputFileId" value="java.lang.Long"></entry>
+									<entry key="outputFileName" value="java.lang.String"></entry>
+									<entry key="mesdbTimestamp" value="java.sql.Date"></entry>
+									<entry key="settlementDate" value="java.sql.Date"></entry>
+									<entry key="merchantBatchDate" value="java.sql.Date"></entry>
+									<entry key="discountAmount" value="java.lang.Long"></entry>
+									<entry key="dutyAmount" value="java.lang.Long"></entry>
+									<entry key="shipFromZip" value="java.lang.String"></entry>
+									<entry key="destCountryCode" value="java.lang.String"></entry>
+									<entry key="vatReferenceNumber" value="java.lang.String"></entry>
+									<entry key="orderDate" value="java.lang.String"></entry>
+									<entry key="shippingTaxAmount" value="java.lang.Long"></entry>
+									<entry key="shippingTaxRate" value="java.lang.Long"></entry>
+									<entry key="issuerBin" value="java.lang.Long"></entry>
+									<entry key="customerCode" value="java.lang.String"></entry>
+									<entry key="clientReferenceNumber" value="java.lang.String"></entry>
+									<entry key="debitType" value="java.lang.String"></entry>
+									<entry key="ardefData" value="java.lang.String"></entry>
+									<entry key="fundingCurrencyCode" value="java.lang.String"></entry>
+									<entry key="fundingAmount" value="java.lang.Long"></entry>
+									<entry key="iccData" value="java.lang.String"></entry>
+									<entry key="chipConditionCode" value="java.lang.String"></entry>
+									<entry key="posTerminalId" value="java.lang.String"></entry>
+									<entry key="settlementDays" value="java.lang.Long"></entry>
+									<entry key="spendQualifiedInd" value="java.lang.String"></entry>
+									<entry key="tokenAssuranceLevel" value="java.lang.String"></entry>
+									<entry key="cardSequenceNumber" value="java.lang.Long"></entry>
+									<entry key="posEnvironment" value="java.lang.String"></entry>
+                                </map>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+		<bean class="org.apache.ignite.configuration.CacheConfiguration">
+					<property name="name" value="mbsDailySummary"></property>
+					<!-- Enable readThrough-->
+					<property name="readThrough" value="true"></property>
+					<property name="writeThrough" value="true"></property>
+					<!-- Set cacheStoreFactory-->
+					<property name="cacheStoreFactory">
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.poc.mc.cachestore.MbsDailySummaryStore"></constructor-arg>
+						</bean>
+					</property>
+					<property name="queryEntities">
+						<list>
+							<bean class="org.apache.ignite.cache.QueryEntity">
+								<property name="keyType" value="java.lang.Long"></property>
+								<property name="valueType" value="com.mes.poc.mc.model.MbsDailySummary"></property>
+								<property name="fields">
+									<map>
+										<entry key="recId" value="java.lang.Long"></entry>
+										<entry key="merchantNumber" value="java.lang.Long"></entry>
+										<entry key="activityDate" value="java.lang.Date"></entry>
+										<entry key="itemType" value="java.lang.Integer"></entry>
+										<entry key="itemSubclass" value="java.lang.String"></entry>
+										<entry key="icCat" value="java.lang.String"></entry>
+										<entry key="itemCount" value="java.lang.Integer"></entry>
+										<entry key="itemAmount" value="java.lang.Double"></entry>
+										<entry key="salesCount" value="java.sql.Integer"></entry>
+										<entry key="salesAmount" value="java.sql.Double"></entry>
+										<entry key="creditsCount" value="java.sql.Ineteger"></entry>
+										<entry key="creditsAmount" value="java.lang.Double"></entry>
+										<entry key="rate" value="java.sql.Double"></entry>
+										<entry key="perItem" value="java.lang.Double"></entry>
+										<entry key="feesDue" value="java.lang.Double"></entry>
+										<entry key="feesPaid" value="java.lang.Double"></entry>
+										<entry key="expense" value="java.lang.Expense"></entry>
+										<entry key="dataSource" value="java.lang.String"></entry>
+										<entry key="dataSourceId" value="java.lang.Long"></entry>
+										<entry key="meLoadFilename" value="java.lang.String"></entry>
+										<entry key="meLoadFileId" value="java.lang.Long"></entry>
+										<entry key="expenseActual" value="java.lang.Double"></entry>
+									</map>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+ <bean class="org.apache.ignite.configuration.CacheConfiguration">
+					<property name="name" value="executionDetailsCache"></property>
+					<!-- Enable readThrough-->
+					<property name="readThrough" value="true"></property>
+					<property name="writeThrough" value="true"></property>
+					<!-- Set cacheStoreFactory-->
+					<property name="cacheStoreFactory">
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.ExecutionDetailStore"></constructor-arg>
+						</bean>
+					</property>
+					<property name="queryEntities">
+						<list>
+							<bean class="org.apache.ignite.cache.QueryEntity">
+								<property name="keyType" value="java.lang.Integer"></property>
+								<property name="valueType" value="com.mes.soa.data.model.ExecutionDetails"></property>
+								<property name="fields">
+									<map>
+										<entry key="executionId" value="java.lang.Integer"></entry>
+										<entry key="stageCd" value="java.lang.String"></entry>		
+										<entry key="levelCd" value="java.lang.Integer"></entry>
+										<entry key="executionTs" value="java.sql.Timestamp"></entry>
+										<entry key="createdBy" value="java.lang.String"></entry>
+										<entry key="createdOn" value="java.sql.Timestamp"></entry>
+										<entry key="updatedBy" value="java.lang.String"></entry>
+										<entry key="updatedOn" value="java.sql.Timestamp"></entry>																				
+									</map>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+ <bean class="org.apache.ignite.configuration.CacheConfiguration">
+					<property name="name" value="refExecutionCache"></property>
+					<!-- Enable readThrough-->
+					<property name="readThrough" value="true"></property>
+					<property name="writeThrough" value="true"></property>
+					<!-- Set cacheStoreFactory-->
+					<property name="cacheStoreFactory">
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefBatchExecutionStore"></constructor-arg>
+						</bean>
+					</property>
+					<property name="queryEntities">
+						<list>
+							<bean class="org.apache.ignite.cache.QueryEntity">
+								<property name="keyType" value="java.lang.Integer"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefBatchExecution"></property>
+								<property name="fields">
+									<map>
+										<entry key="executionId" value="java.lang.Integer"></entry>
+										<entry key="batchSid" value="java.lang.String"></entry>		
+										<entry key="createdBy" value="java.lang.Integer"></entry>
+										<entry key="createdOn" value="java.sql.Timestamp"></entry>
+										<entry key="createdBy" value="java.lang.String"></entry>
+										<entry key="updatedBy" value="java.sql.Timestamp"></entry>
+										<entry key="updatedOn" value="java.lang.String"></entry>																									
+									</map>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+
+
+        </list>
+    </property>
+    </bean>
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+    <property name="driverClassName" value="org.postgresql.Driver"></property>
+    <property name="url" value="jdbc:postgresql://mespostgresdb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:5432/mes"></property>
+    <property name="username" value="mespostgres"></property>
+    <property name="password" value="MESPostgres091"></property>
+</bean>
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="mysqldatasource">
+    <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+    <property name="url" value="jdbc:mysql://mesmysqldb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:3306/master_card"></property>
+    <property name="username" value="mesmysql"></property>
+    <property name="password" value="MESMySql091"></property>
+</bean>
+</beans>
+
