@@ -408,7 +408,7 @@
     </bean>
 	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
     <property name="driverClassName" value="org.postgresql.Driver"></property>
-    <property name="url" value="jdbc:postgresql://3.13.21.6:5432/mespilot"></property>
+    <property name="url" value="jdbc:postgresql://3.13.21.6:5432/mes"></property>
     <property name="username" value="postgres"></property>
     <property name="password" value="titech!@#"></property>
 </bean>
