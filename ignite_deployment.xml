@@ -254,7 +254,7 @@
 								<property name="valueType" value="com.mes.soa.data.model.RefBatchExecution"></property>
 								<property name="fields">
 									<map>
-										<entry key="executionSId" value="java.lang.Integer"></entry>
+										<entry key="executionId" value="java.lang.Integer"></entry>
 										<entry key="batchSId" value="java.lang.Integer"></entry>		
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
