@@ -303,7 +303,7 @@
     </bean>
 	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
     <property name="driverClassName" value="org.postgresql.Driver"></property>
-    <property name="url" value="jdbc:postgresql://mespostgresdb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:5432/mes_pilot"></property>
+    <property name="url" value="jdbc:postgresql://mespostgresdb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:5432/mes_fulfilment"></property>
     <property name="username" value="mespostgres"></property>
     <property name="password" value="MESPostgres091"></property>
 </bean>
