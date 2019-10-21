@@ -298,6 +298,77 @@
 						</list>
 					</property>
 				</bean>
+			<bean class="org.apache.ignite.configuration.CacheConfiguration">
+				<property name="name" value="batchLookupCache"></property>
+				<!-- Enable readThrough-->
+				<property name="readThrough" value="true"></property>
+				<property name="writeThrough" value="true"></property>
+				<!-- Set cacheStoreFactory-->
+				<property name="cacheStoreFactory">
+					<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+						<constructor-arg value="com.mes.soa.data.cachestore.BatchLookupCacheStore"></constructor-arg>
+					</bean>
+				</property>
+				<property name="queryEntities">
+					<list>
+						<bean class="org.apache.ignite.cache.QueryEntity">
+							<property name="keyType" value="java.lang.Integer"></property>
+							<property name="valueType" value="com.mes.soa.data.model.BatchLookup"></property>
+							<property name="fields">
+								<map>
+									<entry key="batchSId" value="java.lang.Integer"></entry>
+									<entry key="batchId" value="java.lang.Integer"></entry>
+									<entry key="createdOn" value="java.sql.Timestamp"></entry>
+									<entry key="createdBy" value="java.lang.String"></entry>
+									<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+									<entry key="updatedBy" value="java.lang.String"></entry>
+								</map>
+							</property>
+						</bean>
+					</list>
+				</property>
+			</bean
+			
+			<bean class="org.apache.ignite.configuration.CacheConfiguration">
+				<property name="name" value="batchTransactionsCache"></property>
+				<!-- Enable readThrough-->
+				<property name="readThrough" value="true"></property>
+				<property name="writeThrough" value="true"></property>
+				<!-- Set cacheStoreFactory-->
+				<property name="cacheStoreFactory">
+					<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+						<constructor-arg value="com.mes.soa.data.cachestore.BatchTransactionsCacheStore"></constructor-arg>
+					</bean>
+				</property>
+				<property name="queryEntities">
+					<list>
+						<bean class="org.apache.ignite.cache.QueryEntity">
+							<property name="keyType" value="java.lang.Integer"></property>
+							<property name="valueType" value="com.mes.soa.data.model.Transaction"></property>
+							<property name="fields">
+								<map>
+									<entry key="transactionSId" value="java.lang.Integer"></entry>
+									<entry key="transactionId" value="java.lang.String"></entry>
+									<entry key="batchDt" value="java.lang.Timestamp"></entry>
+									<entry key="merchantSId" value="java.lang.Integer"></entry>
+									<entry key="finSequenceNbr" value="java.lang.Number"></entry>
+									<entry key="transactionTypeSId" value="java.lang.Integer"></entry>
+									<entry key="cardTypeSId" value="java.lang.Integer"></entry>
+									<entry key="transactionDt" value="java.lang.Timestamp"></entry>
+									<entry key="transactionAmt" value="java.lang.Double"></entry>
+									<entry key="batchSId" value="java.lang.Integer"></entry>
+									<entry key="cardNbr" value="java.lang.Number"></entry>
+									<entry key="transactionDateExpansionInd" value="java.lang.String"></entry>
+									<entry key="createdBy" value="java.lang.String"></entry>
+									<entry key="createdOn" value="java.sql.Timestamp"></entry>
+									<entry key="updatedBy" value="java.lang.String"></entry>
+									<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+								</map>
+							</property>
+						</bean>
+					</list>
+				</property>
+			</bean>
         </list>
     </property>
     </bean>
