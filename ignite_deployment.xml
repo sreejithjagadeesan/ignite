@@ -30,67 +30,51 @@
 		<property name="includeEventTypes">
 			<list>
 				<!--Task execution events -->
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_STARTED" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_FINISHED" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_FAILED" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_TIMEDOUT" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_SESSION_ATTR_SET" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_REDUCED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_STARTED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FINISHED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FAILED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_TIMEDOUT" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_SESSION_ATTR_SET" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_REDUCED" />
 
 				<!--Cache events -->
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_READ" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_READ" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED" />
 			</list>
 		</property>
 
 		<!-- Explicitly configure TCP discovery SPI to provide list of initial 
 			nodes. -->
 		<property name="discoverySpi">
-			<bean
-				class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+			<bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
 				<property name="ipFinder">
 					<!-- Enables Kubernetes IP finder and setting custom namespace name. -->
-					<bean
-						class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
+					<bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
 						<property name="namespace" value="ignite" />
-						<property name="masterUrl"
-							value="https://api-mes-k8s-local-3akmf5-47551496.us-east-2.elb.amazonaws.com" />
+						<property name="masterUrl" value="https://api-mes-k8s-local-3akmf5-47551496.us-east-2.elb.amazonaws.com" />
 					</bean>
 				</property>
 			</bean>
 		</property>
 		<property name="cacheConfiguration">
 			<list>
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="batch"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.Batch"></property>
+								<property name="valueType" value="com.mes.soa.data.model.Batch"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchSId" value="java.lang.Integer"></entry>
@@ -114,8 +98,7 @@
 						</list>
 					</property>
 				</bean>
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="refBatchSourceCode"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
@@ -124,16 +107,14 @@
 					<property name="cacheStoreFactory">
 						<bean class="javax.cache.configuration.FactoryBuilder"
 							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefBatchSourceCodeStore"></constructor-arg>
+							<constructor-arg value="com.mes.soa.data.cachestore.RefBatchSourceCodeStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefBatchSourceCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefBatchSourceCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchSourceSId" value="java.lang.Integer"></entry>
@@ -150,26 +131,22 @@
 						</list>
 					</property>
 				</bean>
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="refBatchProcessCode"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefBatchProcessCodeStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefBatchProcessCodeStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefBatchProcessCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefBatchProcessCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchProcessSId" value="java.lang.Integer"></entry>
@@ -186,26 +163,22 @@
 						</list>
 					</property>
 				</bean>
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="refStatusCode"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefStatusCodeStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefStatusCodeStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefStatusCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefStatusCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="statusSId" value="java.lang.Integer"></entry>
@@ -220,26 +193,22 @@
 						</list>
 					</property>
 				</bean>
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="executionDetails"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.ExecutionDetailStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.ExecutionDetailStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.ExecutionDetails"></property>
+								<property name="valueType" value="com.mes.soa.data.model.ExecutionDetails"></property>
 								<property name="fields">
 									<map>
 										<entry key="executionSId" value="java.lang.Integer"></entry>
@@ -258,26 +227,22 @@
 					</property>
 				</bean>
 
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="batchExecution"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchExecutionStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchExecutionStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.BatchExecution"></property>
+								<property name="valueType" value="com.mes.soa.data.model.BatchExecution"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchExecutionSId" value="java.lang.Integer"></entry>
@@ -294,26 +259,22 @@
 					</property>
 				</bean>
 
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="batchStatus"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchStatusStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchStatusStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.BatchStatus"></property>
+								<property name="valueType" value="com.mes.soa.data.model.BatchStatus"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchStatusSId" value="java.lang.Integer"></entry>
@@ -329,27 +290,23 @@
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="batchLookupCache"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchLookupCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchLookupCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.BatchLookup"></property>
+								<property name="valueType" value="com.mes.soa.data.model.BatchLookup"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchSId" value="java.lang.Integer"></entry>
@@ -364,27 +321,23 @@
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+			
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="batchTransactionsCache"></property>
 					<!-- Enable readThrough -->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchTransactionsCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchTransactionsCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.Transaction"></property>
+								<property name="valueType" value="com.mes.soa.data.model.Transaction"></property>
 								<property name="fields">
 									<map>
 										<entry key="transactionSId" value="java.lang.Integer"></entry>
@@ -392,15 +345,13 @@
 										<entry key="batchDt" value="java.lang.Timestamp"></entry>
 										<entry key="merchantSId" value="java.lang.Integer"></entry>
 										<entry key="finSequenceNbr" value="java.lang.Number"></entry>
-										<entry key="transactionTypeSId"
-											value="java.lang.Integer"></entry>
+										<entry key="transactionTypeSId" value="java.lang.Integer"></entry>
 										<entry key="cardTypeSId" value="java.lang.Integer"></entry>
 										<entry key="transactionDt" value="java.lang.Timestamp"></entry>
 										<entry key="transactionAmt" value="java.lang.Double"></entry>
 										<entry key="batchSId" value="java.lang.Integer"></entry>
 										<entry key="cardNbr" value="java.lang.Number"></entry>
-										<entry key="transactionDateExpansionInd"
-											value="java.lang.String"></entry>
+										<entry key="transactionDateExpansionInd" value="java.lang.String"></entry>
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
@@ -411,27 +362,23 @@
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="merchantAddressCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.MerchantAddressCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.MerchantAddressCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.MerchantAddress"></property>
+								<property name="valueType" value="com.mes.soa.data.model.MerchantAddress"></property>
 								<property name="fields">
 									<map>
 										<entry key="addressSId" value="java.lang.Integer"></entry>
@@ -446,34 +393,30 @@
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+										<entry key="updatedOn" value="java.sql.Timestamp"></entry>																				
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="merchantBankCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.MerchantBankCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.MerchantBankCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.MerchantBank"></property>
+								<property name="valueType" value="com.mes.soa.data.model.MerchantBank"></property>
 								<property name="fields">
 									<map>
 										<entry key="bankSId" value="java.lang.Integer"></entry>
@@ -481,82 +424,70 @@
 										<entry key="merchantSId" value="java.lang.Integer"></entry>
 										<entry key="procesorId" value="java.lang.Integer"></entry>
 										<entry key="visaBinNbr" value="java.lang.Integer"></entry>
-										<entry key="visaAcquirerBusinessId"
-											value="java.lang.Integer"></entry>
-										<entry key="mcBinNbr" value="java.lang.Integer"></entry>
+										<entry key="visaAcquirerBusinessId" value="java.lang.Integer"></entry>
+										<entry key="mcBinNbr" value="java.lang.Integer"></entry>																
 										<entry key="mcIcaNbr" value="java.lang.Integer"></entry>
-										<entry key="discoverAcquirerBusinessId"
-											value="java.lang.Integer"></entry>
+										<entry key="discoverAcquirerBusinessId" value="java.lang.Integer"></entry>
 										<entry key="amAggregatorsList" value="java.lang.String"></entry>
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+										<entry key="updatedOn" value="java.sql.Timestamp"></entry>																											
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="merchantHierarchyCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.MerchantHierarchyCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.MerchantHierarchyCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.MerchantHierarchy"></property>
+								<property name="valueType" value="com.mes.soa.data.model.MerchantHierarchy"></property>
 								<property name="fields">
 									<map>
-										<entry key="merchantHierarchySId"
-											value="java.lang.Integer"></entry>
+										<entry key="merchantHierarchySId" value="java.lang.Integer"></entry>
 										<entry key="merchantSId" value="java.lang.Integer"></entry>
-										<entry key="associatedNodeNumber"
-											value="java.lang.Integer"></entry>
+										<entry key="associatedNodeNumber" value="java.lang.Integer"></entry>
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+										<entry key="updatedOn" value="java.sql.Timestamp"></entry>																				
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="merchantMasterCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.MerchantMasterCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.MerchantMasterCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.MerchantMaster"></property>
+								<property name="valueType" value="com.mes.soa.data.model.MerchantMaster"></property>
 								<property name="fields">
 									<map>
 										<entry key="merchantSId" value="java.lang.Integer"></entry>
@@ -566,39 +497,33 @@
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="sicSId" value="java.lang.Integer"></entry>
-										<entry key="merchantVerificationNbr"
-											value="java.lang.String"></entry>
+										<entry key="sicSId" value="java.lang.Integer"></entry>	
+										<entry key="merchantVerificationNbr" value="java.lang.String"></entry>
 										<entry key="federalTaxNbr" value="java.lang.Integer"></entry>
-										<entry key="fundingCurrencyCode"
-											value="java.lang.String"></entry>
+										<entry key="fundingCurrencyCode" value="java.lang.String"></entry>
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="merchantStatusCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.MerchantStatusCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.MerchantStatusCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.MerchantStatus"></property>
+								<property name="valueType" value="com.mes.soa.data.model.MerchantStatus"></property>
 								<property name="fields">
 									<map>
 										<entry key="merchantStatusSId" value="java.lang.Integer"></entry>
@@ -607,34 +532,30 @@
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+										<entry key="updatedOn" value="java.sql.Timestamp"></entry>																				
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="refAddressTypeCodeCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefAddressTypeCodeCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefAddressTypeCodeCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefAddressTypeCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefAddressTypeCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="addressTypeSId" value="java.lang.Integer"></entry>
@@ -643,34 +564,30 @@
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+										<entry key="updatedOn" value="java.sql.Timestamp"></entry>																				
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="refMerchantStatusCodeCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefMerchantStatusCodeCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefMerchantStatusCodeCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefMerchantStatusCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefMerchantStatusCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="statusSId" value="java.lang.Integer"></entry>
@@ -679,34 +596,30 @@
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
+										<entry key="updatedOn" value="java.sql.Timestamp"></entry>																				
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
+				
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
 					<property name="name" value="refSicCodeCache"></property>
-					<!-- Enable readThrough -->
+					<!-- Enable readThrough-->
 					<property name="readThrough" value="true"></property>
 					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
+					<!-- Set cacheStoreFactory-->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefSicCodeCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefSicCodeCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefSicCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefSicCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="sicSid" value="java.lang.Integer"></entry>
@@ -719,120 +632,99 @@
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
-										<entry key="updatedBy" value="java.lang.String"></entry>
+										<entry key="updatedBy" value="java.lang.String"></entry>													
 									</map>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
-					<property name="name" value="merchantMasterCache"></property>
-					<!-- Enable readThrough -->
-					<property name="readThrough" value="true"></property>
-					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
-					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.MerchantMasterCacheStore"></constructor-arg>
-						</bean>
-					</property>
-					<property name="queryEntities">
-						<list>
-							<bean class="org.apache.ignite.cache.QueryEntity">
-								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.MerchantMaster"></property>
-								<property name="fields">
-									<map>
-										<entry key="merchantSId" value="java.lang.Integer"></entry>
-										<entry key="merchantNbr" value="java.lang.Integer"></entry>
-										<entry key="merchantNm" value="java.lang.String"></entry>
-										<entry key="createdOn" value="java.sql.Timestamp"></entry>
-										<entry key="createdBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
-										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="sicSId" value="java.lang.Integer"></entry>
-										<entry key="merchantVerificationNbr"
-											value="java.lang.String"></entry>
-										<entry key="federalTaxNbr" value="java.lang.Integer"></entry>
-										<entry key="fundingCurrencyCode"
-											value="java.lang.String"></entry>
-									</map>
-								</property>
-							</bean>
-						</list>
-					</property>
-				</bean>
-
-				<bean
-					class="org.apache.ignite.configuration.CacheConfiguration">
-					<property name="name"
-						value="merchantProductSelectionCache"></property>
-					<!-- Enable readThrough -->
-					<property name="readThrough" value="true"></property>
-					<property name="writeThrough" value="true"></property>
-					<!-- Set cacheStoreFactory -->
-					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.MerchantProductSelectionStore"></constructor-arg>
-						</bean>
-					</property>
-					<property name="queryEntities">
-						<list>
-							<bean class="org.apache.ignite.cache.QueryEntity">
-								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.MerchantCardNetworkDetails"></property>
-								<property name="fields">
-									<map>
-										<entry key="merchantSid" value="java.lang.Integer"></entry>
-										<entry key="mcProgramRegistrationId"
-											value="java.lang.String"></entry>
-										<entry key="mcAssignedId" value="java.lang.String"></entry>
-										<entry key="visaEligibilityInd" value="java.lang.String"></entry>
-										<entry key="mcEligibilityInd" value="java.lang.String"></entry>
-										<entry key="debitPlanInd" value="java.lang.String"></entry>
-										<entry key="icEnhancementInd" value="java.lang.String"></entry>
-										<entry key="amexSeNbr" value="java.lang.String"></entry>
-										<entry key="discoverMerchantNbr"
-											value="java.lang.String"></entry>
-										<entry key="createdBy" value="java.lang.String"></entry>
-										<entry key="createdOn" value="java.sql.Timestamp"></entry>
-										<entry key="updatedBy" value="java.lang.String"></entry>
-										<entry key="updatedOn" value="java.sql.Timestamp"></entry>
-									</map>
-								</property>
-							</bean>
-						</list>
-					</property>
-				</bean>
-
+				<bean class="org.apache.ignite.configuration.CacheConfiguration">
+                <property name="name" value="merchantMasterCache"></property>
+                <!-- Enable readThrough-->
+                <property name="readThrough" value="true"></property>
+                <property name="writeThrough" value="true"></property>
+                <!-- Set cacheStoreFactory-->
+                <property name="cacheStoreFactory">
+                    <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+                        <constructor-arg value="com.mes.soa.data.cachestore.MerchantMasterCacheStore"></constructor-arg>
+                    </bean>
+                </property>
+                <property name="queryEntities">
+                    <list>
+                        <bean class="org.apache.ignite.cache.QueryEntity">
+                            <property name="keyType" value="java.lang.Integer"></property>
+                            <property name="valueType" value="com.mes.soa.data.model.MerchantMaster"></property>
+                            <property name="fields">
+                                <map>
+                                    <entry key="merchantSId" value="java.lang.Integer"></entry>
+                                    <entry key="merchantNbr" value="java.lang.Integer"></entry>
+                                    <entry key="merchantNm" value="java.lang.String"></entry>
+                                    <entry key="createdOn" value="java.sql.Timestamp"></entry>
+                                    <entry key="createdBy" value="java.lang.String"></entry>
+                                    <entry key="updatedOn" value="java.sql.Timestamp"></entry>
+                                    <entry key="updatedBy" value="java.lang.String"></entry>
+                                    <entry key="sicSId" value="java.lang.Integer"></entry>    
+                                    <entry key="merchantVerificationNbr" value="java.lang.String"></entry>
+                                    <entry key="federalTaxNbr" value="java.lang.Integer"></entry>
+                                    <entry key="fundingCurrencyCode" value="java.lang.String"></entry>
+                                </map>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+            
+             <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                                <property name="name" value="merchantProductSelectionCache"></property>
+                                <!-- Enable readThrough-->
+                                <property name="readThrough" value="true"></property>
+                                <property name="writeThrough" value="true"></property>
+                                <!-- Set cacheStoreFactory-->
+                                <property name="cacheStoreFactory">
+                                    <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+                                        <constructor-arg value="com.mes.soa.data.cachestore.MerchantProductSelectionStore"></constructor-arg>
+                                    </bean>
+                                </property>
+                                <property name="queryEntities">
+                                    <list>
+                                        <bean class="org.apache.ignite.cache.QueryEntity">
+                                            <property name="keyType" value="java.lang.Integer"></property>
+                                            <property name="valueType" value="com.mes.soa.data.model.MerchantCardNetworkDetails"></property>
+                                            <property name="fields">
+                                                <map>
+                                                    <entry key="merchantSid" value="java.lang.Integer"></entry>
+                                                    <entry key="mcProgramRegistrationId" value="java.lang.String"></entry>
+                                                    <entry key="mcAssignedId" value="java.lang.String"></entry>
+                                                    <entry key="visaEligibilityInd" value="java.lang.String"></entry>
+                                                    <entry key="mcEligibilityInd" value="java.lang.String"></entry>
+                                                    <entry key="debitPlanInd" value="java.lang.String"></entry>
+                                                    <entry key="icEnhancementInd" value="java.lang.String"></entry>
+                                                    <entry key="amexSeNbr" value="java.lang.String"></entry>
+                                                    <entry key="discoverMerchantNbr" value="java.lang.String"></entry>                                                  
+                                                    <entry key="createdBy" value="java.lang.String"></entry>
+                                                    <entry key="createdOn" value="java.sql.Timestamp"></entry>
+                                                    <entry key="updatedBy" value="java.lang.String"></entry>
+                                                    <entry key="updatedOn" value="java.sql.Timestamp"></entry>
+                                                </map>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                          </bean>
+				
 			</list>
 		</property>
 	</bean>
-	<bean
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="dataSource">
-		<property name="driverClassName"
-			value="org.postgresql.Driver"></property>
-		<property name="url"
-			value="jdbc:postgresql://mespostgresdb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:5432/mes_fulfilment"></property>
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="driverClassName" value="org.postgresql.Driver"></property>
+		<property name="url" value="jdbc:postgresql://mespostgresdb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:5432/mes_fulfilment"></property>
 		<property name="username" value="mespostgres"></property>
 		<property name="password" value="MESPostgres091"></property>
 	</bean>
-	<bean
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="mysqldatasource">
-		<property name="driverClassName"
-			value="com.mysql.cj.jdbc.Driver"></property>
-		<property name="url"
-			value="jdbc:mysql://mesmysqldb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:3306/master_card"></property>
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="mysqldatasource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://mesmysqldb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:3306/master_card"></property>
 		<property name="username" value="mesmysql"></property>
 		<property name="password" value="MESMySql091"></property>
 	</bean>
