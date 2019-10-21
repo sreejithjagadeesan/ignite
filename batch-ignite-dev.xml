@@ -299,7 +299,45 @@
 						</list>
 					</property>
 				</bean>
-	
+		
+		<bean class="org.apache.ignite.configuration.CacheConfiguration">
+                                <property name="name" value="merchantProductSelectionCache"></property>
+                                <!-- Enable readThrough-->
+                                <property name="readThrough" value="true"></property>
+                                <property name="writeThrough" value="true"></property>
+                                <!-- Set cacheStoreFactory-->
+                                <property name="cacheStoreFactory">
+                                    <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+                                        <constructor-arg value="com.mes.soa.data.cachestore.MerchantProductSelectionStore"></constructor-arg>
+                                    </bean>
+                                </property>
+                                <property name="queryEntities">
+                                    <list>
+                                        <bean class="org.apache.ignite.cache.QueryEntity">
+                                            <property name="keyType" value="java.lang.Integer"></property>
+                                            <property name="valueType" value="com.mes.soa.data.model.MerchantCardNetworkDetails"></property>
+                                            <property name="fields">
+                                                <map>
+                                                    <entry key="merchantSid" value="java.lang.Integer"></entry>
+                                                    <entry key="mcProgramRegistrationId" value="java.lang.String"></entry>
+                                                    <entry key="mcAssignedId" value="java.lang.String"></entry>
+                                                    <entry key="visaEligibilityInd" value="java.lang.String"></entry>
+                                                    <entry key="mcEligibilityInd" value="java.lang.String"></entry>
+                                                    <entry key="debitPlanInd" value="java.lang.String"></entry>
+                                                    <entry key="icEnhancementInd" value="java.lang.String"></entry>
+                                                    <entry key="amexSeNbr" value="java.lang.String"></entry>
+                                                    <entry key="discoverMerchantNbr" value="java.lang.String"></entry>                                                  
+                                                    <entry key="createdBy" value="java.lang.String"></entry>
+                                                    <entry key="createdOn" value="java.sql.Timestamp"></entry>
+                                                    <entry key="updatedBy" value="java.lang.String"></entry>
+                                                    <entry key="updatedOn" value="java.sql.Timestamp"></entry>
+                                                </map>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                          </bean>
+		
 	</list>
 	</property>
     </bean>
