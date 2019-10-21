@@ -30,44 +30,29 @@
 		<property name="includeEventTypes">
 			<list>
 				<!--Task execution events -->
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_STARTED" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_FINISHED" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_FAILED" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_TIMEDOUT" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_SESSION_ATTR_SET" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_TASK_REDUCED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_STARTED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FINISHED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FAILED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_TIMEDOUT" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_SESSION_ATTR_SET" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_REDUCED" />
 
 				<!--Cache events -->
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_READ" />
-				<util:constant
-					static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_READ" />
+				<util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED" />
 			</list>
 		</property>
 
 		<!-- Explicitly configure TCP discovery SPI to provide list of initial 
 			nodes. -->
 		<property name="discoverySpi">
-			<bean
-				class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+			<bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
 				<property name="ipFinder">
 					<!-- Enables Kubernetes IP finder and setting custom namespace name. -->
-					<bean
-						class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
+					<bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
 						<property name="namespace" value="ignite" />
-
-						<property name="masterUrl"
-							value="https://api-mes-k8s-local-3akmf5-47551496.us-east-2.elb.amazonaws.com" />
-
-
+						<property name="masterUrl" value="https://api-mes-k8s-local-3akmf5-47551496.us-east-2.elb.amazonaws.com" />
 					</bean>
 				</property>
 			</bean>
@@ -81,18 +66,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.Batch"></property>
+								<property name="valueType" value="com.mes.soa.data.model.Batch"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchSId" value="java.lang.Integer"></entry>
@@ -125,16 +107,14 @@
 					<property name="cacheStoreFactory">
 						<bean class="javax.cache.configuration.FactoryBuilder"
 							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefBatchSourceCodeStore"></constructor-arg>
+							<constructor-arg value="com.mes.soa.data.cachestore.RefBatchSourceCodeStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefBatchSourceCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefBatchSourceCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchSourceSId" value="java.lang.Integer"></entry>
@@ -158,18 +138,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefBatchProcessCodeStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefBatchProcessCodeStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefBatchProcessCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefBatchProcessCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchProcessSId" value="java.lang.Integer"></entry>
@@ -193,18 +170,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.RefStatusCodeStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.RefStatusCodeStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.RefStatusCode"></property>
+								<property name="valueType" value="com.mes.soa.data.model.RefStatusCode"></property>
 								<property name="fields">
 									<map>
 										<entry key="statusSId" value="java.lang.Integer"></entry>
@@ -226,18 +200,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.ExecutionDetailStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.ExecutionDetailStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.ExecutionDetails"></property>
+								<property name="valueType" value="com.mes.soa.data.model.ExecutionDetails"></property>
 								<property name="fields">
 									<map>
 										<entry key="executionSId" value="java.lang.Integer"></entry>
@@ -263,18 +234,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchExecutionStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchExecutionStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.BatchExecution"></property>
+								<property name="valueType" value="com.mes.soa.data.model.BatchExecution"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchExecutionSId" value="java.lang.Integer"></entry>
@@ -298,18 +266,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchStatusStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchStatusStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.BatchStatus"></property>
+								<property name="valueType" value="com.mes.soa.data.model.BatchStatus"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchStatusSId" value="java.lang.Integer"></entry>
@@ -333,18 +298,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchLookupCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchLookupCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.BatchLookup"></property>
+								<property name="valueType" value="com.mes.soa.data.model.BatchLookup"></property>
 								<property name="fields">
 									<map>
 										<entry key="batchSId" value="java.lang.Integer"></entry>
@@ -367,18 +329,15 @@
 					<property name="writeThrough" value="true"></property>
 					<!-- Set cacheStoreFactory -->
 					<property name="cacheStoreFactory">
-						<bean class="javax.cache.configuration.FactoryBuilder"
-							factory-method="factoryOf">
-							<constructor-arg
-								value="com.mes.soa.data.cachestore.BatchTransactionsCacheStore"></constructor-arg>
+						<bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+							<constructor-arg value="com.mes.soa.data.cachestore.BatchTransactionsCacheStore"></constructor-arg>
 						</bean>
 					</property>
 					<property name="queryEntities">
 						<list>
 							<bean class="org.apache.ignite.cache.QueryEntity">
 								<property name="keyType" value="java.lang.Integer"></property>
-								<property name="valueType"
-									value="com.mes.soa.data.model.Transaction"></property>
+								<property name="valueType" value="com.mes.soa.data.model.Transaction"></property>
 								<property name="fields">
 									<map>
 										<entry key="transactionSId" value="java.lang.Integer"></entry>
@@ -386,15 +345,13 @@
 										<entry key="batchDt" value="java.lang.Timestamp"></entry>
 										<entry key="merchantSId" value="java.lang.Integer"></entry>
 										<entry key="finSequenceNbr" value="java.lang.Number"></entry>
-										<entry key="transactionTypeSId"
-											value="java.lang.Integer"></entry>
+										<entry key="transactionTypeSId" value="java.lang.Integer"></entry>
 										<entry key="cardTypeSId" value="java.lang.Integer"></entry>
 										<entry key="transactionDt" value="java.lang.Timestamp"></entry>
 										<entry key="transactionAmt" value="java.lang.Double"></entry>
 										<entry key="batchSId" value="java.lang.Integer"></entry>
 										<entry key="cardNbr" value="java.lang.Number"></entry>
-										<entry key="transactionDateExpansionInd"
-											value="java.lang.String"></entry>
+										<entry key="transactionDateExpansionInd" value="java.lang.String"></entry>
 										<entry key="createdBy" value="java.lang.String"></entry>
 										<entry key="createdOn" value="java.sql.Timestamp"></entry>
 										<entry key="updatedBy" value="java.lang.String"></entry>
@@ -408,23 +365,15 @@
 			</list>
 		</property>
 	</bean>
-	<bean
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="dataSource">
-		<property name="driverClassName"
-			value="org.postgresql.Driver"></property>
-		<property name="url"
-			value="jdbc:postgresql://mespostgresdb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:5432/mes_fulfilment"></property>
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="driverClassName" value="org.postgresql.Driver"></property>
+		<property name="url" value="jdbc:postgresql://mespostgresdb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:5432/mes_fulfilment"></property>
 		<property name="username" value="mespostgres"></property>
 		<property name="password" value="MESPostgres091"></property>
 	</bean>
-	<bean
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="mysqldatasource">
-		<property name="driverClassName"
-			value="com.mysql.cj.jdbc.Driver"></property>
-		<property name="url"
-			value="jdbc:mysql://mesmysqldb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:3306/master_card"></property>
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="mysqldatasource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://mesmysqldb.ca3lm8sxl2ye.us-east-2.rds.amazonaws.com:3306/master_card"></property>
 		<property name="username" value="mesmysql"></property>
 		<property name="password" value="MESMySql091"></property>
 	</bean>
